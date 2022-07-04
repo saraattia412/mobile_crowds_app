@@ -66,13 +66,12 @@ Future resetPassword(
     required String email
 }
     )async{
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-}
+     FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 
   Future<UserCredential> signInWithGoogle() async {
     emit(GoogleLoadingLogInState());
     final GoogleSignIn googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 

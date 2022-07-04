@@ -1,4 +1,6 @@
 
+import 'package:mobile_crowds_app/cubit/cubit.dart';
+
 abstract class CrowdStates{}
 
 class InitialState extends CrowdStates{}
@@ -20,3 +22,21 @@ class UploadImageState extends CrowdStates{}
 class AppChangeBottomCheetState extends CrowdStates{}
 
 class AppChangeDateScreen extends CrowdStates{}
+
+class NewsGetItemLoadingState extends CrowdStates{}
+
+class SuccessSaveDataState extends CrowdStates{}
+
+class ErrorSaveDataState extends CrowdStates{
+  ErrorSaveDataState(String string);
+}
+
+class GetSaveLoadingState extends CrowdStates{}
+
+
+class GetSaveSuccessState extends CrowdStates{}
+
+class GetSaveErrorState extends CrowdStates{
+  late final String error;
+  GetSaveErrorState( {required String error});
+}

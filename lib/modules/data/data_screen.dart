@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mobile_crowds_app/components/navigator.dart';
 import 'package:mobile_crowds_app/modules/confirm/confirm_screen.dart';
 
 import '../../components/constant.dart';
@@ -24,6 +23,7 @@ class DataScreen extends StatelessWidget {
    DataScreen({Key? key}) : super(key: key);
 
   var formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class DataScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          navigateAndFinish(context, const SaveData());
+                          navigateAndFinish(context,  SaveData());
                         },
                       ),
                       Stack(
@@ -176,7 +176,7 @@ class DataScreen extends StatelessWidget {
                         children: [
                           defaultFormField(
                             controller: yearController,
-                            type: TextInputType.number,
+                            type: TextInputType.text,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Year must be not empty';
@@ -237,11 +237,15 @@ class DataScreen extends StatelessWidget {
                                   function: () {
                                     if(formKey.currentState!.validate()){
                                       CrowdCubit.get(context).uploadImage(
-                                          firstFolder: yearController.text,
-                                          secondFolder: departmentController.text,
-                                          file: subjectController.text
-                                      );
-                                      navigateTo(context, const ConfirmScreen());
+                                          year: yearController.text,
+                                          department: departmentController.text,
+                                          subject: subjectController.text).then((value) {
+                                        print('done upload');
+                                      }).then((value) {
+                                        navigateAndFinish(context, const ConfirmScreen());
+
+                                      });
+
                                     }
                                   },
                                   text: 'save',

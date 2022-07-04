@@ -34,8 +34,14 @@ class SignUpScreen extends StatelessWidget {
           if(state is GoogleSignUpErrorState){
             showToast(text: state.error.toString(), state: ToastStates.ERROR);
           }
+          if(state is GoogleSignUpSuccessState){
+            showToast(text: 'Sign up done'.toString(), state: ToastStates.SUCCESS);
+          }
           if (state is ErrorSignUpStates ) {
             showToast(text: state.error.toString(), state: ToastStates.ERROR);
+          }
+          if (state is SuccessCreateUserSignUpState ) {
+            showToast(text: 'Sign up done'.toString(), state: ToastStates.SUCCESS);
           }
           if (state is SuccessCreateUserSignUpState || state is GoogleSignUpSuccessState) {
             navigateAndFinish(context,  HomeScreen());

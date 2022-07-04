@@ -1,22 +1,27 @@
+
+
+
+
+
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 
-import 'package:flutter/material.dart';
+
 
 String? uId;
 
-File? pickedFile;
+File? pickedFile ;
 
-var nameImage = Uri.file(pickedFile!.path).pathSegments.last;
-var nameImageBack = nameImage + '_r';
 
-//in result screen
-var dateController = TextEditingController();
-var nameController = TextEditingController();
-
-//in home screen
+//in data screen
 var departmentController = TextEditingController();
 var yearController = TextEditingController();
 var subjectController = TextEditingController();
 
+
+
+//in result screen
+var dateController = TextEditingController();
+var nameController = TextEditingController();
 

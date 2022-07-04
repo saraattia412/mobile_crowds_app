@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -15,12 +17,15 @@ import 'package:mobile_crowds_app/modules/starting/startscreen.dart';
 
 import '../../components/constant.dart';
 import '../../components/navigator.dart';
+import '../../components/toast_package.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
+  User? user;
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +88,11 @@ class HomeScreen extends StatelessWidget {
                   child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  DrawerHeader(
+                  const DrawerHeader(
                     decoration: BoxDecoration(
-                      color: HexColor('082032'),
+                      color: Colors.deepOrange,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Settings',
                       style: TextStyle(
                           color: Colors.white,
@@ -124,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      navigateAndFinish(context, const SaveData());
+                      navigateAndFinish(context,  SaveData());
                     },
                   ),
                   Stack(
@@ -220,6 +225,60 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              body:ConditionalBuilder(
+                  condition: CrowdCubit.get(context).model != null,
+                  builder: (context) {
+                    var model = CrowdCubit.get(context).model;
+
+                    return Column(
+
+                      children: [
+                    if(!FirebaseAuth.instance.currentUser!.emailVerified)
+                        Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          width: width,
+                          height: 40,
+                          color: Colors.black.withOpacity(.8),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 10,),
+                              const Text(
+                                'please Verify your email',
+                                style: TextStyle(
+                                    color: Colors.white
+                                ),
+                              ),
+                              const SizedBox(width: 30,),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
+                                      showToast(text: 'check your mail', state: ToastStates.SUCCESS);
+                                    }).catchError((error){});
+                                  },
+                                  child: const Text(
+                                    'send',
+                                    style: TextStyle(
+                                        color: Colors.deepOrange,
+                                        fontSize: 25
+                                    ),
+                                  )
+                              )
+                            ],),
+                        ),
+                      )
+
+                      ],
+                    );
+
+
+                  },
+                  fallback: (context) => const Center(child: CircularProgressIndicator())
               ),
             )
           ],

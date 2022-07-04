@@ -35,6 +35,10 @@ Widget defaultFormField({
       validator: validator,
 
       decoration: InputDecoration(
+        errorStyle: const TextStyle(
+          color : Colors.white,
+          fontSize: 13
+        ),
         focusColor:Colors.white ,
         hoverColor: Colors.white,
         labelText: label,

@@ -11,7 +11,6 @@ import 'package:mobile_crowds_app/components/toast_package.dart';
 import 'package:mobile_crowds_app/modules/home/home_screen.dart';
 import 'package:mobile_crowds_app/network/local/cache_helper.dart';
 
-import '../../components/constant.dart';
 import '../../components/default_button.dart';
 import '../../components/form_field.dart';
 import '../../components/line.dart';
@@ -39,8 +38,14 @@ class LogInScreen extends StatelessWidget {
           if (state is GoogleLoginErrorState ) {
             showToast(text: state.error, state: ToastStates.ERROR);
           }
+          if (state is GoogleLoginSuccessState ) {
+            showToast(text: 'Success login', state: ToastStates.SUCCESS);
+          }
           if (state is ErrorLogInState ) {
             showToast(text: state.error, state: ToastStates.ERROR);
+          }
+          if (state is SuccessLogInState ) {
+            showToast(text: 'Success login', state: ToastStates.SUCCESS);
           }
           if (state is SuccessLogInState ) {
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {

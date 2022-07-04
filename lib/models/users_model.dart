@@ -35,31 +35,6 @@ class UsersModel{
 
 
 
-class UsersModelGoogle{
-
-  late String uId;
-  late bool isEmailVerified;
-
-  UsersModelGoogle({
-    required this.uId,
-    required this.isEmailVerified,
-  });
-
-  UsersModelGoogle.fromJson(Map <String , dynamic>? json) {
-
-
-    uId= json!['uId'];
-    isEmailVerified=json['isEmailVerified'];
-  }
-
-  Map <String , dynamic> toMap(){
-    return {
-
-      'uId' : uId,
-      'isEmailVerified':isEmailVerified,
-    };
-  }
-}
 
 
 class imageModel{

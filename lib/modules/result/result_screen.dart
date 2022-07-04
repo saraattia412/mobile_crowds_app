@@ -1,6 +1,10 @@
 // ignore_for_file: avoid_print
 
+
+import 'dart:io';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -9,15 +13,18 @@ import 'package:mobile_crowds_app/components/default_button.dart';
 import 'package:mobile_crowds_app/components/navigate_and_finish.dart';
 import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../components/constant.dart';
 import '../../components/form_field.dart';
+import '../../models/firebase_file.dart';
 import '../home/home_screen.dart';
-import '../save_data/savedate_screen.dart';
-import '../starting/startscreen.dart';
+import '../save_data/saveDate_screen.dart';
+import '../starting/startScreen.dart';
 
 class ResultScreen extends StatelessWidget {
   ResultScreen({Key? key}) : super(key: key);
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
 
@@ -26,30 +33,28 @@ class ResultScreen extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var width = size.width;
 
+
+
     return BlocConsumer<CrowdCubit, CrowdStates>(
-      listener: (BuildContext context, state) {
-      },
+      listener: (BuildContext context, state) {},
       builder: (BuildContext context, Object? state) {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: HexColor('082032'),
           appBar: AppBar(
             title: Row(
-              children:  [
+              children: [
                 Container(
                     width: 25,
                     height: 25,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),),
+                        image: AssetImage('assets/images/logo.png'),
+                      ),
                     )),
                 const Text(
                   ' Result',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white
-
-                  ),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             ),
@@ -58,81 +63,82 @@ class ResultScreen extends StatelessWidget {
                 builder: (context) => IconButton(
                   icon: const Icon(Icons.settings),
                   onPressed: () => Scaffold.of(context).openEndDrawer(),
-                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
                 ),
               ),
             ],
           ),
           endDrawer: Drawer(
               child: ListView(
-                padding: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: HexColor('082032'),
+                ),
+                child: const Text(
+                  'Settings',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.home,
+                  size: 20,
+                ),
+                title: const Text(
+                  'select now',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  navigateAndFinish(context, HomeScreen());
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.save,
+                  size: 20,
+                ),
+                title: const Text(
+                  'Saving Data',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () {
+                  navigateAndFinish(context, SaveData());
+                },
+              ),
+              Stack(
                 children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: HexColor('082032'),
-                    ),
-                    child: const Text(
-                      'Settings',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30),
-                    ),
-                  ),
                   ListTile(
                     leading: const Icon(
-                      Icons.home,
+                      Icons.follow_the_signs_outlined,
                       size: 20,
                     ),
                     title: const Text(
-                      'select now',
+                      'SIGN OUT',
                       style: TextStyle(
                         color: Colors.deepOrange,
                         fontSize: 20,
                       ),
                     ),
                     onTap: () {
-                      navigateAndFinish(context, HomeScreen());
+                      navigateAndFinish(context, const StartScreen());
                     },
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.save,
-                      size: 20,
-                    ),
-                    title: const Text(
-                      'Saving Data',
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 20,
-                      ),
-                    ),
-                    onTap: () {
-                      navigateAndFinish(context, const SaveData());
-                    },
-                  ),
-                  Stack(
-                    children: [
-                      ListTile(
-                        leading: const Icon(
-                          Icons.follow_the_signs_outlined,
-                          size: 20,
-                        ),
-                        title: const Text(
-                          'SIGN OUT',
-                          style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontSize: 20,
-                          ),
-                        ),
-                        onTap: () {
-                          navigateAndFinish(context, const StartScreen());
-                        },
-                      ),
-                    ],
                   ),
                 ],
-              )),
+              ),
+            ],
+          )),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -156,7 +162,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                         child: pickedFile != null
                             ? Image.file(
-                          pickedFile!,
+                                pickedFile!,
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(
@@ -170,10 +176,10 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                 const Center(
+                Center(
                   child: Text(
-                    'Result : ',
-                    style: TextStyle(
+                    '',
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -186,7 +192,6 @@ class ResultScreen extends StatelessWidget {
                 defaultButton(
                     function: () {
                       if (CrowdCubit.get(context).isBottomSheetShown) {
-
                       } else {
                         Get.bottomSheet(
                           SingleChildScrollView(
@@ -234,7 +239,6 @@ class ResultScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 20,
                                       ),
-
                                       defaultFormField(
                                         controller: dateController,
                                         type: TextInputType.none,
@@ -245,7 +249,8 @@ class ResultScreen extends StatelessWidget {
                                           return null;
                                         },
                                         onTap: () {
-                                          CrowdCubit.get(context).selectDate(context);
+                                          CrowdCubit.get(context)
+                                              .selectDate(context);
                                         },
                                         label: 'Date',
                                         prefix: Icons.date_range_outlined,
@@ -258,9 +263,18 @@ class ResultScreen extends StatelessWidget {
                                         builder: (BuildContext context) =>
                                             defaultButton(
                                           function: () {
-                                            if(formKey.currentState!.validate()) {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              CrowdCubit.get(context).saveData(
+                                                  name: nameController.text,
+                                                  date: dateController.text,
+                                                  year: yearController.text,
+                                                  department:
+                                                      departmentController.text,
+                                                  subject:
+                                                      subjectController.text);
                                               navigateAndFinish(
-                                                  context, const SaveData());
+                                                  context, SaveData());
                                             }
                                           },
                                           text: 'save',
@@ -289,7 +303,8 @@ class ResultScreen extends StatelessWidget {
                             ),
                           ),
                         ).then((value) {
-                          CrowdCubit.get(context).changeBottomCheetState(isShow: true);
+                          CrowdCubit.get(context)
+                              .changeBottomChetState(isShow: true);
                         });
                       }
                     },
@@ -300,5 +315,35 @@ class ResultScreen extends StatelessWidget {
         );
       },
     );
+  }
+}
+class FirebaseApi {
+  static Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
+      Future.wait(refs.map((ref) => ref.getDownloadURL()).toList());
+
+  static Future<List<FirebaseFile>> listAll(String path) async {
+    final ref = FirebaseStorage.instance.ref(path);
+    final result = await ref.listAll();
+
+    final urls = await _getDownloadLinks(result.items);
+
+    return urls
+        .asMap()
+        .map((index, url) {
+      final ref = result.items[index];
+      final name = ref.name;
+      final file = FirebaseFile(ref: ref, name: name, url: url);
+
+      return MapEntry(index, file);
+    })
+        .values
+        .toList();
+  }
+
+  static Future downloadFile(Reference ref) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/${ref.name}');
+
+    await ref.writeToFile(file);
   }
 }

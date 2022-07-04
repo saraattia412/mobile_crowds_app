@@ -1,9 +1,9 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mobile_crowds_app/components/default_button.dart';
-import 'package:mobile_crowds_app/components/navigator.dart';
 
 import '../../components/constant.dart';
 import '../../components/navigate_and_finish.dart';
@@ -113,7 +113,7 @@ class ConfirmScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      navigateAndFinish(context, const SaveData());
+                      navigateAndFinish(context,  SaveData());
                     },
                   ),
                   Stack(
@@ -162,7 +162,7 @@ class ConfirmScreen extends StatelessWidget {
                         ),
                         child: pickedFile  != null
                             ? Image.file(
-                          pickedFile! ,
+                         pickedFile!  ,
                           fit: BoxFit.cover,
                         )
                             : Image.asset(
@@ -177,7 +177,7 @@ class ConfirmScreen extends StatelessWidget {
 
                 const SizedBox(height: 20,),
                 defaultButton(function: (){
-                  navigateTo(context,  ResultScreen());
+                  navigateAndFinish(context,  ResultScreen());
                 }, text: 'RESULT')
 
               ],

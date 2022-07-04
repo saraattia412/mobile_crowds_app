@@ -1,5 +1,6 @@
 
 
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -17,9 +18,8 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   //load firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-
+  await Firebase.initializeApp( );
+ await FirebaseAppCheck.instance.activate();
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
    uId=CacheHelper.getData(key: 'uId');
