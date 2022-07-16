@@ -4,13 +4,10 @@
 
 
 
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile_crowds_app/modules/login/cubit/states.dart';
 
@@ -32,7 +29,7 @@ class LogInCubit extends Cubit<LogInStates>{
   }
 
 
-  void UserLogIn({
+  void userLogIn({
     required String email,
     required String password,
 
@@ -72,6 +69,7 @@ Future resetPassword(
   Future<UserCredential> signInWithGoogle() async {
     emit(GoogleLoadingLogInState());
     final GoogleSignIn googleSignIn = GoogleSignIn();
+    print(googleSignIn);
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -83,24 +81,24 @@ Future resetPassword(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    User? _user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+    User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
     //add to fireStore
-    if(_user != null){
+    if(user != null){
       final  QuerySnapshot resultQuery = await FirebaseFirestore.instance
           .collection("users")
           .where(
         'uId',
-        isEqualTo: _user.uid,
+        isEqualTo: user.uid,
       ).get();
-      emit(GoogleLoginSuccessState(_user.uid));
-      final List<DocumentSnapshot> _documentSnapshots = resultQuery.docs;
-      if(_documentSnapshots.isEmpty){
-        FirebaseFirestore.instance.collection("users").doc(_user.uid).set(
+      emit(GoogleLoginSuccessState(user.uid));
+      final List<DocumentSnapshot> documentSnapshots = resultQuery.docs;
+      if(documentSnapshots.isEmpty){
+        FirebaseFirestore.instance.collection("users").doc(user.uid).set(
             {
-              'uId': _user.uid,
-              'email': _user.email,
-              'phone': _user.phoneNumber,
-              'name' : _user.displayName,
+              'uId': user.uid,
+              'email': user.email,
+              'phone': user.phoneNumber,
+              'name' : user.displayName,
             }).then((value){
           print('user data saved');
         }).catchError((error){

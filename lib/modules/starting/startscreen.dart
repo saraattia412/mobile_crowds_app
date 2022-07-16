@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, sized_box_for_whitespace
 
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mobile_crowds_app/components/constant.dart';
 import 'package:mobile_crowds_app/components/default_button.dart';
 import 'package:mobile_crowds_app/components/navigator.dart';
 import 'package:mobile_crowds_app/modules/signup/signup.dart';
@@ -31,34 +30,23 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     var size =MediaQuery.of(context).size;
     var height = size.height;
+    var width = size.width;
     List body=[
       Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children:   [
-           Row(
-             children:  [
-               Container(
-                 width: 45,
-                   height: 45,
-                   decoration: const BoxDecoration(
-                     image: DecorationImage(
-                       image: AssetImage('assets/images/logo.png'),),
-                   )),
-               const Text(
-                 ' Mobile Crowds',
-                 style: TextStyle(
-                     fontSize: 30,
-                     fontWeight: FontWeight.w500,
-                     color: Colors.white
-
-                 ),
-               ),
-             ],
-           ),
+            Container(
+              width: width,
+              height: 200,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/logo.png'),),
+              ),
+            ),
             const Text(
-              ' Crowds Counting',
+              'Crowds Counting And Face Recognition',
               style: TextStyle(
                   fontSize: 15,
                   color: Colors.white
@@ -76,29 +64,16 @@ class _StartScreenState extends State<StartScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children:   [
-            Row(
-              children:  [
-                Container(
-                    width: 45,
-                    height: 45,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),),
-                    )),
-                const Text(
-                  ' Mobile Crowds',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white
-
-                  ),
-                ),
-              ],
+            Container(
+              width: width/2,
+              height: 200,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/logo.png'),),
+              ),
             ),
-
             const Text(
-              ' Crowds Counting',
+              'Crowds Counting And Face Recognition',
               style: TextStyle(
                   fontSize: 15,
                   color: Colors.white

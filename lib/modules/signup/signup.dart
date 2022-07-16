@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 
 import 'dart:ui';
 
@@ -32,16 +32,16 @@ class SignUpScreen extends StatelessWidget {
       child: BlocConsumer<SignUpCubit, SignUpStates>(
         listener: (BuildContext context, state) {
           if(state is GoogleSignUpErrorState){
-            showToast(text: state.error.toString(), state: ToastStates.ERROR);
+            showToast(text: state.error, state: ToastStates.error);
           }
           if(state is GoogleSignUpSuccessState){
-            showToast(text: 'Sign up done'.toString(), state: ToastStates.SUCCESS);
+            showToast(text: 'Sign up done'.toString(), state: ToastStates.success);
           }
           if (state is ErrorSignUpStates ) {
-            showToast(text: state.error.toString(), state: ToastStates.ERROR);
+            showToast(text: state.error.toString(), state: ToastStates.error);
           }
           if (state is SuccessCreateUserSignUpState ) {
-            showToast(text: 'Sign up done'.toString(), state: ToastStates.SUCCESS);
+            showToast(text: 'Sign up done'.toString(), state: ToastStates.success);
           }
           if (state is SuccessCreateUserSignUpState || state is GoogleSignUpSuccessState) {
             navigateAndFinish(context,  HomeScreen());
@@ -66,24 +66,13 @@ class SignUpScreen extends StatelessWidget {
               ),
               Scaffold(
                   appBar: AppBar(
-                    title: Row(
-                      children:  [
-                        Container(
-                            width: 25,
-                            height: 25,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/logo.png'),),
-                            )),
-                        const Text(
-                          ' Mobile Crowds',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white
+                    title: const Text(
+                      ' Mobile Crowds',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white
 
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
 
                   ),
@@ -216,7 +205,7 @@ class SignUpScreen extends StatelessWidget {
                               const SizedBox(height: 30,),
                               Row(
                                 children: [
-                                  hDivider(context),
+                                  Expanded(child: hDivider(context)),
                                   const Center(
                                     child: Text(
                                       'OR',
@@ -226,7 +215,7 @@ class SignUpScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  hDivider(context),
+                                  Expanded(child: hDivider(context)),
 
                                 ],
                               ),

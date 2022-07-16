@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 
 import 'dart:ui';
 
@@ -12,8 +12,8 @@ import 'package:mobile_crowds_app/components/navigate_and_finish.dart';
 import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
 import 'package:mobile_crowds_app/modules/data/data_screen.dart';
-import 'package:mobile_crowds_app/modules/save_data/savedate_screen.dart';
-import 'package:mobile_crowds_app/modules/starting/startscreen.dart';
+import 'package:mobile_crowds_app/modules/save_data/saveDate_screen.dart';
+import 'package:mobile_crowds_app/modules/starting/startScreen.dart';
 
 import '../../components/constant.dart';
 import '../../components/navigator.dart';
@@ -58,21 +58,9 @@ class HomeScreen extends StatelessWidget {
             Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
-                title: Row(
-                  children: [
-                    Container(
-                        width: 25,
-                        height: 25,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/logo.png'),
-                          ),
-                        )),
-                    const Text(
-                      ' Select',
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                  ],
+                title: const Text(
+                  ' Select',
+                  style: TextStyle(fontSize: 25, color: Colors.white),
                 ),
                 actions: [
                   Builder(
@@ -229,8 +217,6 @@ class HomeScreen extends StatelessWidget {
               body:ConditionalBuilder(
                   condition: CrowdCubit.get(context).model != null,
                   builder: (context) {
-                    var model = CrowdCubit.get(context).model;
-
                     return Column(
 
                       children: [
@@ -258,7 +244,7 @@ class HomeScreen extends StatelessWidget {
                               TextButton(
                                   onPressed: () async {
                                     FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
-                                      showToast(text: 'check your mail', state: ToastStates.SUCCESS);
+                                      showToast(text: 'check your mail', state: ToastStates.success);
                                     }).catchError((error){});
                                   },
                                   child: const Text(

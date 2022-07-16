@@ -43,7 +43,7 @@ Widget myDivider() => Padding(
   child: Container(
     width: double.infinity,
     height: 1,
-    color: Colors.grey[300],
+    color: Colors.white,
   ),
 );
 

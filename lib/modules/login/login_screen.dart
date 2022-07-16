@@ -36,16 +36,16 @@ class LogInScreen extends StatelessWidget {
       child: BlocConsumer<LogInCubit, LogInStates>(
         listener: (BuildContext context, state) {
           if (state is GoogleLoginErrorState ) {
-            showToast(text: state.error, state: ToastStates.ERROR);
+            showToast(text: state.error, state: ToastStates.error);
           }
           if (state is GoogleLoginSuccessState ) {
-            showToast(text: 'Success login', state: ToastStates.SUCCESS);
+            showToast(text: state.toString(), state: ToastStates.success);
           }
           if (state is ErrorLogInState ) {
-            showToast(text: state.error, state: ToastStates.ERROR);
+            showToast(text: state.error, state: ToastStates.error);
           }
           if (state is SuccessLogInState ) {
-            showToast(text: 'Success login', state: ToastStates.SUCCESS);
+            showToast(text: 'Success login', state: ToastStates.success);
           }
           if (state is SuccessLogInState ) {
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
@@ -78,24 +78,13 @@ class LogInScreen extends StatelessWidget {
               Scaffold(
 
                 appBar: AppBar(
-                  title: Row(
-                    children:  [
-                      Container(
-                          width: 25,
-                          height: 25,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/logo.png'),),
-                          )),
-                      const Text(
-                        ' Mobile Crowds',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white
+                  title:const Text(
+                    ' Mobile Crowds',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white
 
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
 
 
@@ -180,7 +169,7 @@ class LogInScreen extends StatelessWidget {
                                   defaultButton(
                                     function: () {
                                       if (formKey.currentState!.validate()) {
-                                        LogInCubit.get(context).UserLogIn(
+                                        LogInCubit.get(context).userLogIn(
                                           email: emailController.text,
                                           password: passController.text,
                                         );
@@ -206,7 +195,7 @@ class LogInScreen extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                hDivider(context),
+                                Expanded(child: hDivider(context)),
                                 const Center(
                                   child: Text(
                                     'OR',
@@ -216,7 +205,7 @@ class LogInScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                hDivider(context),
+                                Expanded(child: hDivider(context)),
 
                               ],
                             ),

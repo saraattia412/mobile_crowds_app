@@ -37,8 +37,5 @@ class UsersModel{
 
 
 
-class imageModel{
-
-}
 
 

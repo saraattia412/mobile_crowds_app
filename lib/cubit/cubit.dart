@@ -20,7 +20,6 @@ import 'package:intl/intl.dart';
 import 'package:mobile_crowds_app/components/constant.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
 import 'package:mobile_crowds_app/models/users_model.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../models/save_data_model.dart';
 
@@ -136,6 +135,8 @@ class CrowdCubit extends Cubit<CrowdStates> {
       name: name,
       id: docData.id,
       path: '$year/$department/$subject',
+
+
     );
 
 
@@ -150,27 +151,39 @@ class CrowdCubit extends Cubit<CrowdStates> {
 
 Stream<List<SaveDataModel>> getSaveData(){
     return FirebaseFirestore.instance.collection('save_data').doc(uId).collection('data').
-    orderBy('date' , descending: true)
+    orderBy('dateTime' , descending: true)
         .snapshots().map((snapshot) => snapshot.docs.map((doc) => SaveDataModel.fromJson(doc.data())).toList());
 }
 
 
-  Future getFiles(
-  {
-    required String? year,
-    required String? department,
-    required String? subject,
-}
-      ) async{
-    final pdfPath = '$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last}.replaceAll(".jpg", "_p.pdf")}';
-    final resultPath = '$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last}.replaceAll(".jpg", "_r.jpg")}';
-    final countPath = '$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last}.replaceAll(".jpg", "_c.txt")}';
-    final path = '$year/$department/$subject/';
-    
-    FirebaseStorage.instance.ref().child('$pdfPath/ts11');
+  Future<void> getFile (
+      {
+        required String? year,
+        required String? department,
+        required String? subject,
 
       }
+      ) async {
+    final ref = FirebaseStorage.instance.ref().child('ts11_r');
+    var url = await ref.getDownloadURL();
+    print(url);
+  }
 
+
+String imageUrl = '';
+  Future getUrlImageResult()  async {
+    return  FirebaseStorage.instance.ref().child('ts11_r.jpg').getDownloadURL().then((value) {
+
+      imageUrl = value;
+      print(imageUrl);
+      emit(GetUrlImageResultState());
+    }
+    ).catchError((error){
+      print(error.toString());
+      emit(ErrorGetUrlImageResultState());
+    });
+
+  }
 
 
 

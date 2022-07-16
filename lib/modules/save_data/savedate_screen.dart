@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:mobile_crowds_app/components/line.dart';
 import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
 
 import '../../components/navigate_and_finish.dart';
 import '../../models/save_data_model.dart';
 import '../home/home_screen.dart';
-import '../starting/startscreen.dart';
+import '../starting/startScreen.dart';
 
 class SaveData extends StatelessWidget {
    SaveData({Key? key}) : super(key: key);
@@ -24,21 +25,9 @@ class SaveData extends StatelessWidget {
             key: scaffoldKey,
             backgroundColor: HexColor('082032'),
             appBar: AppBar(
-              title: Row(
-                children: [
-                  Container(
-                      width: 25,
-                      height: 25,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/logo.png'),
-                        ),
-                      )),
-                  const Text(
-                    ' Save Data',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ],
+              title: const Text(
+                ' Save Data',
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
               actions: [
                 Builder(
@@ -55,11 +44,11 @@ class SaveData extends StatelessWidget {
                 child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                DrawerHeader(
+                const DrawerHeader(
                   decoration: BoxDecoration(
-                    color: HexColor('082032'),
+                    color: Colors.deepOrange,
                   ),
-                  child: const Text(
+                  child: Text(
                     'Settings',
                     style: TextStyle(
                         color: Colors.white,
@@ -122,18 +111,21 @@ class SaveData extends StatelessWidget {
               ],
             )),
 
-            body: StreamBuilder<List>(
+            body: StreamBuilder<List<SaveDataModel>>(
                 stream: CrowdCubit.get(context).getSaveData(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     print(snapshot.error);
                     return const Center(
-                      child: Text('we got error'),
+                      child: Text(
+                          'we got error',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     );
                   } else if (snapshot.hasData) {
-                     final data = snapshot.data!;
+                     final data = snapshot.data;
                     return ListView.builder(
-                      itemCount: data.length,
+                      itemCount: data!.length,
                       itemBuilder: (context,index) =>
                           design(context,data[index]),
                     );
@@ -157,26 +149,30 @@ Widget design(BuildContext context,SaveDataModel model) => Padding(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      Expanded(
-        child: Row(
-          children: [
-            Text(
-              model.name,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const SizedBox(width: 30,),
-            Text(
+
+      Row(
+        children: [
+          Text(
+            model.name,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          const SizedBox(width: 30,),
+          Align(
+            alignment: AlignmentDirectional.bottomEnd,
+            child: Text(
               model.date,
               style: const TextStyle(color: Colors.grey),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+      const SizedBox(height: 20,),
       Text(
         model.path,
         style: const TextStyle(color: Colors.white),
       ),
-
+      const SizedBox(height: 20,),
+      myDivider(),
     ],
   ),
 );

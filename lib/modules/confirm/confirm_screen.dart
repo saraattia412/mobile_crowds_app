@@ -39,24 +39,13 @@ class ConfirmScreen extends StatelessWidget {
               ),
 
             ),
-            title:  Row(
-              children:  [
-                Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),),
-                    )),
-                const Text(
-                  ' Confirm',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white
+            title: const Text(
+              ' Confirm',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white
 
-                  ),
-                ),
-              ],
+              ),
             ),
             actions: [
               Builder(
@@ -72,11 +61,11 @@ class ConfirmScreen extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  DrawerHeader(
+                  const DrawerHeader(
                     decoration: BoxDecoration(
-                      color: HexColor('082032'),
+                      color:Colors.deepOrange,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Settings',
                       style: TextStyle(
                           color: Colors.white,
@@ -178,7 +167,7 @@ class ConfirmScreen extends StatelessWidget {
                 const SizedBox(height: 20,),
                 defaultButton(function: (){
                   navigateAndFinish(context,  ResultScreen());
-                }, text: 'RESULT')
+                }, text: 'CONFIRM')
 
               ],
 

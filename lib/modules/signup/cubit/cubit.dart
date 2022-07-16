@@ -99,24 +99,24 @@ class SignUpCubit extends Cubit<SignUpStates> {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    User? _user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+    User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
     //add to fireStore
-    if(_user != null){
+    if(user != null){
       final  QuerySnapshot resultQuery = await FirebaseFirestore.instance
           .collection("users")
           .where(
         'uId',
-        isEqualTo: _user.uid,
+        isEqualTo: user.uid,
       ).get();
-      emit(GoogleSignUpSuccessState(_user.uid));
-      final List<DocumentSnapshot> _documentSnapshots = resultQuery.docs;
-      if(_documentSnapshots.isEmpty){
-        FirebaseFirestore.instance.collection("users").doc(_user.uid).set(
+      emit(GoogleSignUpSuccessState(user.uid));
+      final List<DocumentSnapshot> documentSnapshots = resultQuery.docs;
+      if(documentSnapshots.isEmpty){
+        FirebaseFirestore.instance.collection("users").doc(user.uid).set(
             {
-              'uId': _user.uid,
-              'email': _user.email,
-              'phone': _user.phoneNumber,
-              'name' : _user.displayName,
+              'uId': user.uid,
+              'email': user.email,
+              'phone': user.phoneNumber,
+              'name' : user.displayName,
             }).then((value){
           print('user data saved');
         }).catchError((error){

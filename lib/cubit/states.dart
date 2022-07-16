@@ -1,5 +1,4 @@
 
-import 'package:mobile_crowds_app/cubit/cubit.dart';
 
 abstract class CrowdStates{}
 
@@ -40,3 +39,8 @@ class GetSaveErrorState extends CrowdStates{
   late final String error;
   GetSaveErrorState( {required String error});
 }
+
+class GetUrlImageResultState extends CrowdStates{}
+
+class ErrorGetUrlImageResultState extends CrowdStates{}
+

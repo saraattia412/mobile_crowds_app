@@ -1,10 +1,8 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 
 
-import 'dart:io';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -13,11 +11,8 @@ import 'package:mobile_crowds_app/components/default_button.dart';
 import 'package:mobile_crowds_app/components/navigate_and_finish.dart';
 import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
-import 'package:path_provider/path_provider.dart';
-
 import '../../components/constant.dart';
 import '../../components/form_field.dart';
-import '../../models/firebase_file.dart';
 import '../home/home_screen.dart';
 import '../save_data/saveDate_screen.dart';
 import '../starting/startScreen.dart';
@@ -32,31 +27,25 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var width = size.width;
-
+    var height = size.height;
+    bool image = false;
 
 
     return BlocConsumer<CrowdCubit, CrowdStates>(
-      listener: (BuildContext context, state) {},
+      listener: (BuildContext context, state) {
+        CrowdCubit.get(context).getUrlImageResult().then((value) {
+          image=true;
+        });
+
+      },
       builder: (BuildContext context, Object? state) {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: HexColor('082032'),
           appBar: AppBar(
-            title: Row(
-              children: [
-                Container(
-                    width: 25,
-                    height: 25,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),
-                      ),
-                    )),
-                const Text(
-                  ' Result',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ],
+            title:const Text(
+              ' Result',
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             actions: [
               Builder(
@@ -73,11 +62,11 @@ class ResultScreen extends StatelessWidget {
               child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              DrawerHeader(
+              const DrawerHeader(
                 decoration: BoxDecoration(
-                  color: HexColor('082032'),
+                  color: Colors.deepOrange,
                 ),
-                child: const Text(
+                child: Text(
                   'Settings',
                   style: TextStyle(
                       color: Colors.white,
@@ -155,20 +144,18 @@ class ResultScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(25),
                       child: Container(
                         width: width,
-                        height: 500,
+                        height: height/2,
                         decoration: BoxDecoration(
                           border: Border.all(width: 1),
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        child: pickedFile != null
-                            ? Image.file(
-                                pickedFile!,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                'assets/images/p1.jpeg',
-                                fit: BoxFit.cover,
-                              ),
+                        child: image
+                          ?
+                        Image.network(
+                           CrowdCubit.get(context).imageUrl
+                        )
+                      :
+                        const Center(child: CircularProgressIndicator()),
                       ),
                     ),
                   ),
@@ -176,19 +163,9 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Center(
-                  child: Text(
-                    '',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+
+
+
                 defaultButton(
                     function: () {
                       if (CrowdCubit.get(context).isBottomSheetShown) {
@@ -268,11 +245,11 @@ class ResultScreen extends StatelessWidget {
                                               CrowdCubit.get(context).saveData(
                                                   name: nameController.text,
                                                   date: dateController.text,
-                                                  year: yearController.text,
+                                                  year: yearController.dropDownValue!.value.toString(),
                                                   department:
-                                                      departmentController.text,
+                                                      departmentController.dropDownValue!.value.toString(),
                                                   subject:
-                                                      subjectController.text);
+                                                      subjectController.dropDownValue!.value.toString());
                                               navigateAndFinish(
                                                   context, SaveData());
                                             }
@@ -315,35 +292,5 @@ class ResultScreen extends StatelessWidget {
         );
       },
     );
-  }
-}
-class FirebaseApi {
-  static Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
-      Future.wait(refs.map((ref) => ref.getDownloadURL()).toList());
-
-  static Future<List<FirebaseFile>> listAll(String path) async {
-    final ref = FirebaseStorage.instance.ref(path);
-    final result = await ref.listAll();
-
-    final urls = await _getDownloadLinks(result.items);
-
-    return urls
-        .asMap()
-        .map((index, url) {
-      final ref = result.items[index];
-      final name = ref.name;
-      final file = FirebaseFile(ref: ref, name: name, url: url);
-
-      return MapEntry(index, file);
-    })
-        .values
-        .toList();
-  }
-
-  static Future downloadFile(Reference ref) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/${ref.name}');
-
-    await ref.writeToFile(file);
   }
 }

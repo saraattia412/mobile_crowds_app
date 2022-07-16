@@ -1,8 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable, unnecessary_null_comparison
 
 import 'dart:ui';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,6 @@ import 'package:mobile_crowds_app/modules/confirm/confirm_screen.dart';
 
 import '../../components/constant.dart';
 import '../../components/default_button.dart';
-import '../../components/form_field.dart';
 import '../../components/navigate_and_finish.dart';
 import '../../cubit/cubit.dart';
 import '../../cubit/states.dart';
@@ -59,24 +59,13 @@ class DataScreen extends StatelessWidget {
                   ),
 
                 ),
-                title:Row(
-                  children:  [
-                    Container(
-                        width: 25,
-                        height: 25,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/logo.png'),),
-                        )),
-                    const Text(
-                      ' Data',
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.white
+                title:const Text(
+                  ' Data',
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white
 
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 actions: [
                   Builder(
@@ -92,11 +81,11 @@ class DataScreen extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                      DrawerHeader(
+                      const DrawerHeader(
                         decoration: BoxDecoration(
-                          color: HexColor('082032'),
+                          color: Colors.deepOrange,
                         ),
-                        child: const Text(
+                        child: Text(
                           'Settings',
                           style: TextStyle(
                               color: Colors.white,
@@ -174,62 +163,173 @@ class DataScreen extends StatelessWidget {
                       key: formKey,
                       child: Column(
                         children: [
-                          defaultFormField(
-                            controller: yearController,
-                            type: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Year must be not empty';
-                              }
-                              return null;
-                            },
-                            onTap: () {
-                              print(yearController);
-                            },
-                            label: 'Year',
-                            prefix: Icons.drive_file_rename_outline,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          defaultFormField(
-                            controller: departmentController,
-                            type: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Department must be not empty';
-                              }
-                              return null;
-                            },
-                            onTap: () {
-                              print(departmentController);
-                            },
-                            label: 'Department',
-                            prefix: Icons.drive_file_rename_outline,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          //year
+                           DropDownTextField(
 
-                          defaultFormField(
-                            controller: subjectController,
-                            type: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Subject must be not empty';
-                              }
-                              return null;
-                            },
-                            onTap: () {
-                              print(subjectController);
-                            },
-                            label: 'Subject',
-                            prefix: Icons.drive_file_rename_outline,
+                             singleController: yearController,
+                            dropDownItemCount: 4,
+                             clearOption: false,
+                             enableSearch: false,
+                             validator: (String? value) {
+                               if (yearController.dropDownValue?.value.toString() == null) {
+                                 return "Year Is Required";
+                               } else {
+                                 return null;
+                               }
+                             },
+                             isEnabled: true,
 
+                            textFieldDecoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                  Icons.drive_file_rename_outline,
+                                color: Colors.deepOrange,
+                              ),
+                              label: const Text(
+                                'year',
+                                style: TextStyle(
+                                  fontSize: 15
+                                ),
+                              ),
+                                labelStyle:const TextStyle(
+                                  color: Colors.deepOrange,
+                                ) ,
+                              fillColor: Colors.white,
+                                filled: true,
+                                errorStyle : const TextStyle(
+                                    color: Colors.white
+                                ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  color:  Colors.white,
+                                  width: 2.0,
+                                )
+                              )
+                            ),
+
+                            dropDownList: const [
+                              DropDownValueModel(name: '1st-year', value: "1st-year"),
+                              DropDownValueModel(name: '2nd-year', value: "2nd-year"),
+                              DropDownValueModel(name: '3rd-year', value: "3rd-year"),
+                              DropDownValueModel(name: '4th-year', value: "4th-year"),
+                          ],
+                             onChanged: (val) {
+                               print(yearController.dropDownValue!.value.toString());
+                             },
+                           ),
+                          const SizedBox(height: 20,),
+                          DropDownTextField(
+                            singleController: departmentController,
+                            dropDownItemCount: 3,
+                            clearOption: false,
+                            enableSearch: false,
+                            validator: (String? value) {
+                              if (departmentController.dropDownValue?.value.toString() == null) {
+                                return "Department Is Required";
+                              } else {
+                                return null;
+                              }
+                            },
+                            isEnabled: true,
+
+                            textFieldDecoration: InputDecoration(
+                                prefixIcon: const Icon(
+                                  Icons.drive_file_rename_outline,
+                                  color: Colors.deepOrange,
+                                ),
+                                label: const Text(
+                                  'Department',
+                                  style: TextStyle(
+                                      fontSize: 15
+                                  ),
+                                ),
+                                labelStyle:const TextStyle(
+                                  color: Colors.deepOrange,
+                                ) ,
+                                fillColor: Colors.white,
+                                filled: true,
+                                errorStyle : const TextStyle(
+                                    color: Colors.white
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: const BorderSide(
+                                      color:  Colors.white,
+                                      width: 2.0,
+                                    )
+                                )
+                            ),
+
+                            dropDownList: const [
+                              DropDownValueModel(name: 'cs', value: "cs"),
+                              DropDownValueModel(name: 'it', value: "it"),
+                              DropDownValueModel(name: 'is', value: "is"),
+                            ],
+                            onChanged: (val) {
+                              print(departmentController.dropDownValue!.value.toString());
+                            },
                           ),
-                          const SizedBox(
-                            height: 20,
+                          const SizedBox(height: 20,),
+                          SingleChildScrollView(
+                            child: DropDownTextField(
+                              singleController: subjectController,
+                              dropDownItemCount: 10,
+                              clearOption: false,
+                              enableSearch: false,
+                              validator: (String? value) {
+                                if (subjectController.dropDownValue?.value.toString() == null) {
+                                  return "subject Is Required";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              isEnabled: true,
+
+                              textFieldDecoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.drive_file_rename_outline,
+                                    color: Colors.deepOrange,
+                                  ),
+                                  label: const Text(
+                                    'Subject',
+                                    style: TextStyle(
+                                        fontSize: 15
+                                    ),
+                                  ),
+                                  labelStyle:const TextStyle(
+                                    color: Colors.deepOrange,
+                                  ) ,
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  errorStyle : const TextStyle(
+                                      color: Colors.white
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: const BorderSide(
+                                        color:  Colors.white,
+                                        width: 2.0,
+                                      )
+                                  )
+                              ),
+                              dropDownList: const [
+                                DropDownValueModel(name: 'Deep Leaning', value: "deep leaning"),
+                                DropDownValueModel(name: 'Parallel Processing', value: "parallel processing"),
+                                DropDownValueModel(name: 'Algorithm', value: "Algorithm"),
+                                DropDownValueModel(name: 'Compiler', value: "Compiler"),
+                                DropDownValueModel(name: 'Data Structure', value: "Data Structure"),
+                                DropDownValueModel(name: 'Machine Learning', value: "Machine Learning"),
+                                DropDownValueModel(name: 'Formal Language', value: "Formal Language"),
+                                DropDownValueModel(name: 'Expert System', value: "Expert System"),
+                                DropDownValueModel(name: 'Final', value: "Final"),
+                                DropDownValueModel(name: 'Mid Term', value: "Mid Term"),
+                              ],
+                              onChanged: (val) {
+                                print(subjectController.dropDownValue!.value.toString());
+                              },
+                            ),
                           ),
+                          const SizedBox(height: 20,),
                           ConditionalBuilder(
                             condition: true,
                             builder: (BuildContext context) =>
@@ -237,9 +337,9 @@ class DataScreen extends StatelessWidget {
                                   function: () {
                                     if(formKey.currentState!.validate()){
                                       CrowdCubit.get(context).uploadImage(
-                                          year: yearController.text,
-                                          department: departmentController.text,
-                                          subject: subjectController.text).then((value) {
+                                          year: yearController.dropDownValue!.value.toString(),
+                                          department: departmentController.dropDownValue!.value.toString(),
+                                          subject: subjectController.dropDownValue!.value.toString()).then((value) {
                                         print('done upload');
                                       }).then((value) {
                                         navigateAndFinish(context, const ConfirmScreen());
