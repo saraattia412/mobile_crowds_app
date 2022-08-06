@@ -166,6 +166,9 @@ class ConfirmScreen extends StatelessWidget {
 
                 const SizedBox(height: 20,),
                 defaultButton(function: (){
+                  CrowdCubit.get(context).getUrlImageResult(
+                      year: yearController.toString(), department: departmentController.toString()
+                      , subject: subjectController.toString());
                   navigateAndFinish(context,  ResultScreen());
                 }, text: 'CONFIRM')
 

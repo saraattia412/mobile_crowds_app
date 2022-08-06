@@ -32,13 +32,13 @@ class SignUpScreen extends StatelessWidget {
       child: BlocConsumer<SignUpCubit, SignUpStates>(
         listener: (BuildContext context, state) {
           if(state is GoogleSignUpErrorState){
-            showToast(text: state.error, state: ToastStates.error);
+            showToast(text: state.error.toString().replaceRange(0, 14, '').split(']')[1], state: ToastStates.error);
           }
           if(state is GoogleSignUpSuccessState){
             showToast(text: 'Sign up done'.toString(), state: ToastStates.success);
           }
           if (state is ErrorSignUpStates ) {
-            showToast(text: state.error.toString(), state: ToastStates.error);
+            showToast(text: state.error.toString().replaceRange(0, 14, '').split(']')[1], state: ToastStates.error);
           }
           if (state is SuccessCreateUserSignUpState ) {
             showToast(text: 'Sign up done'.toString(), state: ToastStates.success);

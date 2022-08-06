@@ -36,13 +36,13 @@ class LogInScreen extends StatelessWidget {
       child: BlocConsumer<LogInCubit, LogInStates>(
         listener: (BuildContext context, state) {
           if (state is GoogleLoginErrorState ) {
-            showToast(text: state.error, state: ToastStates.error);
+            showToast(text: state.error.toString().replaceRange(0, 14, '').split(']')[1], state: ToastStates.error);
           }
           if (state is GoogleLoginSuccessState ) {
             showToast(text: state.toString(), state: ToastStates.success);
           }
           if (state is ErrorLogInState ) {
-            showToast(text: state.error, state: ToastStates.error);
+            showToast(text: state.error.toString().replaceRange(0, 14, '').split(']')[1], state: ToastStates.error);
           }
           if (state is SuccessLogInState ) {
             showToast(text: 'Success login', state: ToastStates.success);

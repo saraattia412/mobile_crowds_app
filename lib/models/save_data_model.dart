@@ -7,6 +7,7 @@ class SaveDataModel{
   late String id;
   late String path;
   late DateTime dateTime;
+  late String? pdf;
 
 
   SaveDataModel({
@@ -14,6 +15,7 @@ class SaveDataModel{
     required this.name,
     required this.id,
     required this.path,
+    required this.pdf,
 
 
   });
@@ -24,6 +26,7 @@ class SaveDataModel{
     id= json['id'];
     path=json['path'];
     dateTime=(json['dateTime'] as Timestamp).toDate();
+     pdf = json['pdf'];
   }
 
   Map <String , dynamic> toMap(){
@@ -33,6 +36,7 @@ class SaveDataModel{
       'id' : id,
       'path':path,
       'dateTime' : DateTime.now(),
+       'pdf' : pdf,
 
     };
   }
