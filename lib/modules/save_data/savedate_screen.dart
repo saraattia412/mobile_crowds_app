@@ -8,8 +8,10 @@ import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
 
 import '../../components/navigate_and_finish.dart';
+import '../../components/navigator.dart';
 import '../../models/save_data_model.dart';
 import '../home/home_screen.dart';
+import '../pdf/pdf_screen.dart';
 import '../starting/startScreen.dart';
 
 class SaveData extends StatelessWidget {
@@ -172,7 +174,30 @@ Widget design(BuildContext context,SaveDataModel model) => Padding(
         style: const TextStyle(color: Colors.white),
       ),
       const SizedBox(height: 20,),
+      InkWell(
+        onTap:(){
+          navigateTo(context,    PdfScreen(url: model.pdf!,));
+        } ,
+        child: Container(
+          height: 30,
+          width: 200,
+          color: Colors.white,
+          child: const Center(
+              child: Text(
+                'DPF result',
+                style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20
+                ),
+              )),
+        ),
+
+      ),
+      const SizedBox(height: 20,),
+
       myDivider(),
+      const SizedBox(height: 20,),
+
     ],
   ),
 );

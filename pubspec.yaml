@@ -42,7 +42,8 @@ dependencies:
   file_picker:
   intl:
   dropdown_textfield: ^1.0.3
-  syncfusion_flutter_pdfviewer: ^19.4.56-beta
+  flutter_cached_pdfview: ^0.4.1
+  http: ^0.13.4
 
 
   #firebase

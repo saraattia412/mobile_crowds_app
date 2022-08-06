@@ -44,3 +44,10 @@ class GetUrlImageResultState extends CrowdStates{}
 
 class ErrorGetUrlImageResultState extends CrowdStates{}
 
+class GetUrlPdfResultState extends CrowdStates{}
+
+class ErrorGetUrlPdfResultState extends CrowdStates{}
+
+class GetUrlTxtResultState extends CrowdStates{}
+
+class ErrorGetUrlTxtResultState extends CrowdStates{}

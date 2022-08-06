@@ -24,7 +24,6 @@ class DataScreen extends StatelessWidget {
 
   var formKey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
 

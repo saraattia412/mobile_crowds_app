@@ -4,7 +4,7 @@
 
 
 
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable
 
 
 import 'dart:io';
@@ -20,7 +20,6 @@ import 'package:intl/intl.dart';
 import 'package:mobile_crowds_app/components/constant.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
 import 'package:mobile_crowds_app/models/users_model.dart';
-
 import '../models/save_data_model.dart';
 
 class CrowdCubit extends Cubit<CrowdStates> {
@@ -135,6 +134,7 @@ class CrowdCubit extends Cubit<CrowdStates> {
       name: name,
       id: docData.id,
       path: '$year/$department/$subject',
+      pdf: pdfUrl,
 
 
     );
@@ -170,22 +170,54 @@ Stream<List<SaveDataModel>> getSaveData(){
   }
 
 
-String imageUrl = '';
-  Future getUrlImageResult()  async {
-    return  FirebaseStorage.instance.ref().child('ts11_r.jpg').getDownloadURL().then((value) {
+late String imageUrl = '';
+  Future getUrlImageResult(
+  {
+    required String? year,
+    required String? department,
+    required String? subject,
+}
+      )  async {
+    final storageRef=  FirebaseStorage.instance.ref();
+      final url = await storageRef.child('$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last.replaceAll('.jpg', '_r.jpg')}').getDownloadURL().then((value) async {
+       imageUrl = value;
+        print(imageUrl);
+       await getUrlIPdfResult(year: yearController.toString(), department: departmentController.toString(), subject: subjectController.toString());
+       emit(GetUrlImageResultState());
+      }).catchError((error){
+        print(error.toString());
+        emit(ErrorGetUrlImageResultState());
+      });
 
-      imageUrl = value;
-      print(imageUrl);
-      emit(GetUrlImageResultState());
-    }
-    ).catchError((error){
-      print(error.toString());
-      emit(ErrorGetUrlImageResultState());
-    });
+
+
+
 
   }
 
+  String pdfUrl = '';
+  Future getUrlIPdfResult(
+  {
+    required String? year,
+    required String? department,
+    required String? subject,
+}
+      )  async {
+    final storageRef=  FirebaseStorage.instance.ref();
+    final urlPDF = await storageRef.child('$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last.replaceAll('.jpg', '_p.pdf')}').getDownloadURL().then((value) {
+      pdfUrl = value;
+      print(pdfUrl);
+      emit(GetUrlPdfResultState());
+    }).catchError((error){
+      print(error.toString());
+      emit(ErrorGetUrlPdfResultState());
+    });
 
+
+
+
+
+  }
 
 
 }

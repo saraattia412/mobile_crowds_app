@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, must_be_immutable
+// ignore_for_file: avoid_print, must_be_immutable, sized_box_for_whitespace
 
 
 
@@ -9,8 +9,10 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mobile_crowds_app/components/default_button.dart';
 import 'package:mobile_crowds_app/components/navigate_and_finish.dart';
+import 'package:mobile_crowds_app/components/navigator.dart';
 import 'package:mobile_crowds_app/cubit/cubit.dart';
 import 'package:mobile_crowds_app/cubit/states.dart';
+import 'package:mobile_crowds_app/modules/pdf/pdf_screen.dart';
 import '../../components/constant.dart';
 import '../../components/form_field.dart';
 import '../home/home_screen.dart';
@@ -33,9 +35,10 @@ class ResultScreen extends StatelessWidget {
 
     return BlocConsumer<CrowdCubit, CrowdStates>(
       listener: (BuildContext context, state) {
-        CrowdCubit.get(context).getUrlImageResult().then((value) {
+        if(state is GetUrlPdfResultState){
           image=true;
-        });
+        }
+
 
       },
       builder: (BuildContext context, Object? state) {
@@ -135,7 +138,7 @@ class ResultScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
                     width: width,
-                    height: 500,
+                    height: height/2,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.deepOrange, width: 3),
                       borderRadius: BorderRadius.circular(25),
@@ -149,10 +152,10 @@ class ResultScreen extends StatelessWidget {
                           border: Border.all(width: 1),
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        child: image
+                        child: image == true
                           ?
                         Image.network(
-                           CrowdCubit.get(context).imageUrl
+                          CrowdCubit.get(context).imageUrl
                         )
                       :
                         const Center(child: CircularProgressIndicator()),
@@ -163,8 +166,36 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
+                const Text(''),
+                const SizedBox(
+                  height: 20,
+                ),
+                 image
+                     ?
+                 InkWell(
+                   onTap:(){
+                     navigateTo(context, PdfScreen(url : CrowdCubit.get(context).pdfUrl,));
+                   } ,
+                  child: Container(
+                    height: 30,
+                    width: 200,
+                    color: Colors.white,
+                    child: const Center(
+                        child: Text(
+                            'DPF result',
+                          style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontSize: 20
+                          ),
+                        )),
+                  ),
 
-
+                )
+                :
+                 const Center(child: CircularProgressIndicator()),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 defaultButton(
                     function: () {
