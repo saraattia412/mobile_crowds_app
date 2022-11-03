@@ -165,7 +165,7 @@ class DataScreen extends StatelessWidget {
                           //year
                            DropDownTextField(
 
-                             singleController: yearController,
+                             controller: yearController,
                             dropDownItemCount: 4,
                              clearOption: false,
                              enableSearch: false,
@@ -218,7 +218,7 @@ class DataScreen extends StatelessWidget {
                            ),
                           const SizedBox(height: 20,),
                           DropDownTextField(
-                            singleController: departmentController,
+                            controller: departmentController,
                             dropDownItemCount: 3,
                             clearOption: false,
                             enableSearch: false,
@@ -271,7 +271,7 @@ class DataScreen extends StatelessWidget {
                           const SizedBox(height: 20,),
                           SingleChildScrollView(
                             child: DropDownTextField(
-                              singleController: subjectController,
+                              controller: subjectController,
                               dropDownItemCount: 10,
                               clearOption: false,
                               enableSearch: false,

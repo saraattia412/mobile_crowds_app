@@ -152,11 +152,9 @@ class ConfirmScreen extends StatelessWidget {
                         child: pickedFile  != null
                             ? Image.file(
                          pickedFile!  ,
-                          fit: BoxFit.cover,
                         )
                             : Image.asset(
                           'assets/images/p1.jpeg',
-                          fit: BoxFit.cover,
 
                         ),
                       ),
@@ -166,9 +164,7 @@ class ConfirmScreen extends StatelessWidget {
 
                 const SizedBox(height: 20,),
                 defaultButton(function: (){
-                  CrowdCubit.get(context).getUrlImageResult(
-                      year: yearController.toString(), department: departmentController.toString()
-                      , subject: subjectController.toString());
+                  CrowdCubit.get(context).getUrlImageResult();
                   navigateAndFinish(context,  ResultScreen());
                 }, text: 'CONFIRM')
 

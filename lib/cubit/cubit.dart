@@ -172,17 +172,12 @@ Stream<List<SaveDataModel>> getSaveData(){
 
 late String imageUrl = '';
   Future getUrlImageResult(
-  {
-    required String? year,
-    required String? department,
-    required String? subject,
-}
       )  async {
     final storageRef=  FirebaseStorage.instance.ref();
-      final url = await storageRef.child('$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last.replaceAll('.jpg', '_r.jpg')}').getDownloadURL().then((value) async {
+      final url = await storageRef.child('ts11_r.jpg').getDownloadURL().then((value) async {
        imageUrl = value;
         print(imageUrl);
-       await getUrlIPdfResult(year: yearController.toString(), department: departmentController.toString(), subject: subjectController.toString());
+       await getUrlIPdfResult();
        emit(GetUrlImageResultState());
       }).catchError((error){
         print(error.toString());
@@ -197,14 +192,10 @@ late String imageUrl = '';
 
   String pdfUrl = '';
   Future getUrlIPdfResult(
-  {
-    required String? year,
-    required String? department,
-    required String? subject,
-}
+
       )  async {
     final storageRef=  FirebaseStorage.instance.ref();
-    final urlPDF = await storageRef.child('$year/$department/$subject/${Uri.file(pickedFile!.path).pathSegments.last.replaceAll('.jpg', '_p.pdf')}').getDownloadURL().then((value) {
+    final urlPDF = await storageRef.child('ts11_p.pdf').getDownloadURL().then((value) {
       pdfUrl = value;
       print(pdfUrl);
       emit(GetUrlPdfResultState());
