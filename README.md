@@ -1,10 +1,18 @@
 # mobile_crowds_app
 
-A new Flutter project.
+my gradution project
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+##using firebase_aut.
+
+##firbase store to save data.
+
+##save images in firebase_storage.
+
+##get data from firebase store and storage.
+
+##open pdf.
 
 A few resources to get you started if this is your first Flutter project:
 
